@@ -1,32 +1,14 @@
-FROM docker:18.09
+FROM docker:20.10
 
-ENV CLOUD_SDK_VERSION=246.0.0
-ENV PATH /google-cloud-sdk/bin:$PATH
-
-RUN apk --no-cache add \
-        curl \
-        python \
-        py-crcmod \
-        bash \
-        libc6-compat \
-        openssh-client \
-        git \
-        gnupg \
-        py-pip \
-        python-dev \
-        libc-dev \
-        libffi-dev \
-        openssl-dev \
-        make \
-        gcc \
-        nodejs \
-        nodejs-npm \
-    && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
-    tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
-    rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
-    ln -s /lib /lib64 && \
-    gcloud config set core/disable_usage_reporting true && \
+RUN apk --no-cache add curl nodejs npm bash python3
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/root/google-cloud-sdk/bin
+RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
-    gcloud config set metrics/environment github_docker_image && \
-    gcloud components install beta --quiet && \
-    pip install docker-compose
+    gcloud config set metrics/environment github_docker_image
+RUN gcloud components update --quiet
+RUN gcloud -v
+RUN node -v
+RUN npm -v
+RUN docker -v
+RUN docker-compose -v
