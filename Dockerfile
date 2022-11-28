@@ -7,6 +7,7 @@ RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image
 RUN gcloud components update --quiet
+RUN gcloud components install beta --quiet              
 RUN gcloud -v
 RUN node -v
 RUN npm -v
