@@ -1,4 +1,4 @@
-FROM docker:20.10
+FROM docker:25.0.5
 
 RUN apk --no-cache add curl nodejs npm bash python3 py3-pip
 RUN curl -sSL https://sdk.cloud.google.com | bash
@@ -10,7 +10,7 @@ RUN gcloud components update --quiet
 RUN gcloud components install beta --quiet  
 RUN gcloud components install alpha --quiet
 RUN gcloud components install log-streaming --quiet
-RUN pip3 install grpcio
+RUN apk add py3-grpcio
 ENV CLOUDSDK_PYTHON_SITEPACKAGES=1
 RUN gcloud -v
 RUN node -v
